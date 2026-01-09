@@ -1,0 +1,85 @@
+{
+  "sample_outputs": [
+    {
+      "id": 1,
+      "url": "https://en.wikipedia.org/wiki/Alan_Turing",
+      "title": "Alan Turing",
+      "summary": "Alan Mathison Turing OBE FRS was an English mathematician, computer scientist, logician, cryptanalyst, philosopher, and theoretical biologist. Turing was highly influential in the development of theoretical computer science, providing a formalisation of the concepts of algorithm and computation with the Turing machine, which can be considered a model of a general-purpose computer.",
+      "key_entities": {
+        "people": ["Alan Turing", "Alonzo Church", "Max Newman"],
+        "organizations": ["University of Cambridge", "Bletchley Park", "National Physical Laboratory"],
+        "locations": ["United Kingdom", "London", "Manchester"]
+      },
+      "sections": ["Early life", "Education", "Cryptanalysis", "Computing", "Legacy"],
+      "quiz": [
+        {
+          "question": "Where did Alan Turing study?",
+          "options": [
+            "Harvard University",
+            "Cambridge University",
+            "Oxford University",
+            "Princeton University"
+          ],
+          "answer": "Cambridge University",
+          "difficulty": "easy",
+          "explanation": "Mentioned in the 'Education' section of the article."
+        },
+        {
+          "question": "What was Alan Turing's main contribution during World War II?",
+          "options": [
+            "Atomic research",
+            "Breaking the Enigma code",
+            "Inventing radar",
+            "Developing jet engines"
+          ],
+          "answer": "Breaking the Enigma code",
+          "difficulty": "medium",
+          "explanation": "Detailed in the 'Cryptanalysis' section about his work at Bletchley Park."
+        },
+        {
+          "question": "What theoretical machine did Turing propose?",
+          "options": [
+            "Difference Engine",
+            "Analytical Engine",
+            "Turing Machine",
+            "ENIAC"
+          ],
+          "answer": "Turing Machine",
+          "difficulty": "easy",
+          "explanation": "The Turing machine is mentioned as his fundamental contribution to computer science."
+        },
+        {
+          "question": "What test did Turing propose for machine intelligence?",
+          "options": [
+            "Intelligence Quotient Test",
+            "Turing Test",
+            "Machine Learning Test",
+            "Computation Test"
+          ],
+          "answer": "Turing Test",
+          "difficulty": "medium",
+          "explanation": "The Turing Test is discussed in the context of artificial intelligence."
+        },
+        {
+          "question": "In which year was Alan Turing born?",
+          "options": [
+            "1910",
+            "1912",
+            "1914",
+            "1920"
+          ],
+          "answer": "1912",
+          "difficulty": "hard",
+          "explanation": "His birth year is mentioned in the 'Early life' section."
+        }
+      ],
+      "related_topics": [
+        "Cryptography",
+        "Enigma machine",
+        "Computer science history",
+        "Artificial intelligence",
+        "Bletchley Park"
+      ]
+    }
+  ]
+}
