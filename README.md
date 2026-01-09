@@ -1,117 +1,128 @@
-# DeepKlarity Technologies - AI Wiki Quiz Generator
+# DeepKlarity Technologies – Wiki Quiz Generator
 
-An AI-powered quiz generator that creates interactive quizzes from Wikipedia articles using Google Gemini AI and LangChain.
+DeepKlarity Wiki Quiz Generator is a full-stack web application that converts Wikipedia articles into structured, interactive quizzes.  
+It extracts meaningful content from articles, analyzes key concepts, and presents them as multiple-choice questions through a modern, responsive interface.
 
-## Tech Stack
+The system is designed for **learning, assessment, and knowledge reinforcement**, making it suitable for students, educators, and self-learners.
+
+---
+
+## 🚀 Overview
+
+- Enter any Wikipedia article URL  
+- Automatically extract structured content  
+- Generate quizzes based strictly on article facts  
+- Play quizzes interactively with scoring  
+- View and revisit past quizzes with full details  
+
+---
+
+## 🧠 Core Capabilities
+
+- Wikipedia content extraction and parsing
+- Section-wise content understanding
+- Entity identification (people, organizations, locations)
+- Multiple-choice quiz generation with difficulty levels
+- Interactive quiz mode with scoring
+- Quiz history with detailed modal view
+- Duplicate URL caching for performance
+- Dark-mode friendly, responsive UI
+
+---
+
+## 🛠️ Tech Stack
 
 ### Backend (Python)
-- **FastAPI** - Modern, high-performance web framework
-- **SQLAlchemy** - SQL toolkit and ORM
-- **PostgreSQL** - Database (via Supabase)
-- **BeautifulSoup4** - HTML parsing and web scraping
-- **LangChain** - LLM orchestration framework
-- **Google Gemini** - AI model for quiz generation
+- **FastAPI** – High-performance API framework  
+- **SQLAlchemy** – ORM for database operations  
+- **PostgreSQL (Supabase)** – Persistent storage  
+- **BeautifulSoup4** – HTML parsing and scraping  
+- **LangChain** – Content orchestration layer  
+- **Google Gemini** – Quiz and content generation  
 
 ### Frontend (Next.js)
-- **Next.js 15** - React framework with App Router
-- **TypeScript** - Type-safe JavaScript
-- **Tailwind CSS** - Utility-first CSS framework
-- **Shadcn/UI** - Component library
-- **Framer Motion** - Animation library
+- **Next.js 15 (App Router)** – Modern React framework  
+- **TypeScript** – Type-safe frontend development  
+- **Tailwind CSS** – Utility-first styling  
+- **Shadcn/UI** – Accessible UI components  
+- **Framer Motion** – Smooth animations  
 
-## Features
+---
 
-- Generate AI-powered quizzes from any Wikipedia article
-- Extract key entities (people, organizations, locations)
-- Identify article sections and related topics
-- Interactive quiz mode with scoring
-- Quiz history with full details modal
-- Caching to prevent duplicate scraping
-- Beautiful, responsive UI with dark theme
-
-## Project Structure
-
-```
 /backend
-  /app
-    main.py           # FastAPI application entry
-    database.py       # Database configuration
-    models.py         # SQLAlchemy models
-    schemas.py        # Pydantic schemas
-    /services
-      wikipedia_scraper.py  # Web scraping service
-      quiz_generator.py     # LangChain + Gemini integration
-    /routes
-      quiz.py         # API endpoints
-  requirements.txt    # Python dependencies
+/app
+main.py # FastAPI entry point
+database.py # Database connection
+models.py # ORM models
+schemas.py # API schemas
+/services
+wikipedia_scraper.py
+quiz_generator.py
+/routes
+quiz.py
+requirements.txt
 
-/src (Frontend)
-  /app
-    page.tsx          # Main page with tabs
-    layout.tsx        # Root layout
-    globals.css       # Global styles
-  /components
-    GenerateQuiz.tsx  # Quiz generation form
-    QuizHistory.tsx   # History table with modal
-    QuizDisplay.tsx   # Quiz result display
-    QuizCard.tsx      # Individual question card
-  /lib
-    api.ts           # API client functions
-    types.ts         # TypeScript interfaces
+/src
+/app
+page.tsx
+layout.tsx
+globals.css
+/components
+GenerateQuiz.tsx
+QuizHistory.tsx
+QuizDisplay.tsx
+QuizCard.tsx
+/lib
+api.ts
+types.ts
 
 /sample_data
-  urls.txt           # Sample Wikipedia URLs
-  sample_outputs.json # Example API response
-```
+urls.txt
+sample_outputs.json
 
-## API Endpoints
 
-### POST /api/generate-quiz
-Generate a quiz from a Wikipedia URL.
+---
 
-**Request:**
+## 🔗 API Endpoints
+
+### Generate Quiz
+**POST** `/api/generate-quiz`
+
+**Request**
 ```json
 {
   "url": "https://en.wikipedia.org/wiki/Alan_Turing"
 }
-```
 
-**Response:**
-```json
+Response
+
 {
   "id": 1,
-  "url": "https://en.wikipedia.org/wiki/Alan_Turing",
   "title": "Alan Turing",
   "summary": "...",
   "key_entities": {
-    "people": ["Alan Turing", "Alonzo Church"],
-    "organizations": ["University of Cambridge"],
-    "locations": ["United Kingdom"]
+    "people": [],
+    "organizations": [],
+    "locations": []
   },
-  "sections": ["Early life", "Education", ...],
-  "quiz": [
-    {
-      "question": "Where did Alan Turing study?",
-      "options": ["Harvard", "Cambridge", "Oxford", "Princeton"],
-      "answer": "Cambridge",
-      "difficulty": "easy",
-      "explanation": "Mentioned in the Education section."
-    }
-  ],
-  "related_topics": ["Cryptography", "Computer science"],
+  "sections": [],
+  "quiz": [],
+  "related_topics": [],
   "created_at": "2024-01-01T00:00:00Z"
 }
-```
 
-### GET /api/history
-Get list of previously generated quizzes.
+Quiz History
 
-### GET /api/quiz/{id}
-Get full quiz details by ID.
+GET /api/history
+Returns all previously generated quizzes.
 
-## Database Schema
+Quiz Details
 
-```sql
+GET /api/quiz/{id}
+Returns full quiz data for a specific quiz.
+
+🗄️ Database Schema
+
 CREATE TABLE wiki_quizzes (
     id SERIAL PRIMARY KEY,
     url TEXT NOT NULL UNIQUE,
@@ -125,134 +136,87 @@ CREATE TABLE wiki_quizzes (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
-```
+⚙️ Setup Instructions
+Prerequisites
 
-## LangChain Prompt Templates
+Python 3.10+
 
-### Quiz Generation Prompt
-```
-You are an educational content generator specializing in creating factual quiz questions.
+Node.js 18+
 
-Using ONLY the provided Wikipedia article text below, generate 7 multiple-choice quiz questions.
+PostgreSQL (Supabase recommended)
 
-ARTICLE TITLE: {title}
-ARTICLE CONTENT: {content}
+Environment Variables
 
-RULES:
-1. Questions must be STRICTLY grounded in the article text - no hallucinations
-2. Each question must have exactly 4 options (A, B, C, D)
-3. Only ONE option should be correct
-4. Include a brief explanation referencing the article content
-5. Assign difficulty: "easy", "medium", or "hard"
-6. Cover different aspects/sections of the article
-7. Make incorrect options plausible but clearly wrong based on the text
-
-Return output strictly in JSON format.
-```
-
-### Entity Extraction Prompt
-```
-Extract key entities from this Wikipedia article.
-
-ARTICLE TITLE: {title}
-ARTICLE CONTENT: {content}
-
-Extract and categorize entities into:
-1. people - names of individuals mentioned
-2. organizations - companies, institutions, groups
-3. locations - places, countries, cities
-
-Return as JSON with keys: people, organizations, locations
-```
-
-### Related Topics Prompt
-```
-Based on this Wikipedia article, suggest related topics for further reading.
-
-ARTICLE TITLE: {title}
-ARTICLE SUMMARY: {summary}
-ARTICLE SECTIONS: {sections}
-
-Suggest 5-7 related Wikipedia topics that would help someone learn more about this subject.
-```
-
-## Setup Instructions
-
-### Prerequisites
-- Python 3.10+
-- Node.js 18+
-- PostgreSQL database (Supabase recommended)
-
-### Environment Variables
-Create a `.env` file:
-```
-DATABASE_URL=postgresql://...
-GEMINI_API_KEY=your_gemini_api_key
+Create a .env file:
+DATABASE_URL=postgresql://username:password@host:port/dbname
+GEMINI_API_KEY=your_api_key
 NEXT_PUBLIC_API_URL=http://localhost:8000
-```
 
-### Backend Setup
-```bash
+Backend Setup
+
 cd backend
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
-```
 
-### Frontend Setup
-```bash
+Frontend Setup
+
 npm install
 npm run dev
-```
 
-### Database Setup
-The database schema is automatically created. For manual setup:
-```sql
-CREATE TABLE wiki_quizzes (
-    id SERIAL PRIMARY KEY,
-    url TEXT NOT NULL UNIQUE,
-    title TEXT NOT NULL,
-    summary TEXT,
-    key_entities JSONB DEFAULT '{}',
-    sections JSONB DEFAULT '[]',
-    quiz JSONB DEFAULT '[]',
-    related_topics JSONB DEFAULT '[]',
-    raw_html TEXT,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-```
+▶️ Running the Application
 
-## Running Locally
+Start the backend server on port 8000
 
-1. Start the backend:
-```bash
-cd backend
-uvicorn app.main:app --reload --port 8000
-```
+Start the frontend on port 3000
 
-2. Start the frontend:
-```bash
-npm run dev
-```
+Open your browser at
+👉 http://localhost:3000
 
-3. Open http://localhost:3000
+✨ Additional Highlights
 
-## Bonus Features Implemented
+Intelligent caching prevents duplicate scraping
 
-- URL caching (duplicate URLs return cached results)
-- Raw HTML storage
-- Interactive quiz mode with scoring
-- Section-wise article breakdown
-- Entity extraction and categorization
-- Related topic suggestions
+Raw HTML is preserved for traceability
 
-## Screenshots
+Difficulty-based question categorization
 
-[Screenshots would be placed here showing:]
-- Generate Quiz tab with URL input
-- Generated quiz with questions and answers
-- Quiz mode with scoring
-- History tab with past quizzes
-- Quiz details modal
+Clean UI with animations and dark theme
+
+Modular, scalable architecture
+
+📌 Use Cases
+
+Educational platforms
+
+Student self-assessment
+
+Knowledge validation tools
+
+Interview preparation
+
+Research-based learning
+
+📄 License
+
+This project is licensed under the MIT License.
+Feel free to use, modify, and distribute.
+
+
+If you want, I can also:
+- Add **badges** (Vercel, License, Tech stack)
+- Write a **Vercel deployment section**
+- Convert this into a **professional PDF**
+- Optimize it for **GitHub trending visibility**
+
+Just say the word 🚀
+
+
+
+
+
+
+
+## 📁 Project Structure
+
